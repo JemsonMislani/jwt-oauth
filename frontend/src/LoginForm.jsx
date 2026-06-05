@@ -1,15 +1,31 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+
 export default function LoginForm() {
-  const [name, setName] = useState('')
-  const [pass, setPass] = useState('')
+  const [user, setUser] = useState([])
+  const [username, setUserName] = useState('')
+  const [userpass, setUserPass] = useState('')
+  const nav = useNavigate()
 
   const handleLoginBtn = (e) => {
     e.preventDefault()
-    if(!name || !pass){
+    if(!username || !userpass){
       alert('Please enter email or password')
       return
     }
+    axios.post('http://localhost:3009/createLogin', {
+      email: username, password: userpass
+    })
+    .then(result => {
+      setUser(result.data.user)
+      localStorage.setItem('usertoken', result.data.token)
+      nav('/success')
+    })
+    .catch(err => {
+      alert('Invalid credentials')
+      console.log(err)
+    })
   }
 
   return (
@@ -23,14 +39,14 @@ export default function LoginForm() {
                   className="focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-gray-700 py-3 px-2 w-70 border border-gray-400 rounded"
                   type="text" 
                   placeholder="Enter email or username"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}/>
+                  value={username}
+                  onChange={(e) => setUserName(e.target.value)}/>
                 <input
                   className="focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-gray-700 py-3 px-2 w-70 border border-gray-400 rounded" 
                   type="text" 
                   placeholder="Enter password"
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}/>
+                  value={userpass}
+                  onChange={(e) => setUserPass(e.target.value)}/>
                 <div className='flex w-70 items-center gap-1'>
                   <input
                   type="checkbox"
