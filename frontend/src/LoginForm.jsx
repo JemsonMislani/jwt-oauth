@@ -6,6 +6,7 @@ export default function LoginForm() {
   const [user, setUser] = useState([])
   const [username, setUserName] = useState('')
   const [userpass, setUserPass] = useState('')
+  const [remember, setRemember] = useState(false)
   const nav = useNavigate()
 
   const handleLoginBtn = (e) => {
@@ -19,7 +20,11 @@ export default function LoginForm() {
     })
     .then(result => {
       setUser(result.data.user)
-      localStorage.setItem('usertoken', result.data.token)
+      if(remember){
+        localStorage.setItem('usertoken', result.data.token)
+      } else {
+        sessionStorage.setItem('usertoken', result.data.token)
+      }
       nav('/success')
     })
     .catch(err => {
@@ -43,7 +48,7 @@ export default function LoginForm() {
                   onChange={(e) => setUserName(e.target.value)}/>
                 <input
                   className="focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-gray-700 py-3 px-2 w-70 border border-gray-400 rounded" 
-                  type="text" 
+                  type="password" 
                   placeholder="Enter password"
                   value={userpass}
                   onChange={(e) => setUserPass(e.target.value)}/>
@@ -52,6 +57,8 @@ export default function LoginForm() {
                   type="checkbox"
                   id="remember"
                   className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
                 />
                 <label htmlFor="">Remember me</label>
                 </div>
