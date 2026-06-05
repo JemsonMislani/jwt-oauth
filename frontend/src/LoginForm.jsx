@@ -1,20 +1,36 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 export default function LoginForm() {
+  const [name, setName] = useState('')
+  const [pass, setPass] = useState('')
+
+  const handleLoginBtn = (e) => {
+    e.preventDefault()
+    if(!name || !pass){
+      alert('Please enter email or password')
+      return
+    }
+  }
 
   return (
     <>
-        <div className="flex justify-center items-center h-200">
+      <form onSubmit={handleLoginBtn}>
+                <div className="flex justify-center items-center h-200">
             <div className="ring shadow-xl ring-gray-900/5 flex-col w-110 h-120 rounded">
                 <div className="flex justify-center items-center align-middle text-4xl font-semibold text-black h-30">Login</div>
                 <div className="flex flex-col justify-center items-center gap-5 not-odd:h-70">
                 <input 
                   className="focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-gray-700 py-3 px-2 w-70 border border-gray-400 rounded"
                   type="text" 
-                  placeholder="Enter email or username"/>
+                  placeholder="Enter email or username"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}/>
                 <input
                   className="focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-gray-700 py-3 px-2 w-70 border border-gray-400 rounded" 
                   type="text" 
-                  placeholder="Enter password"/>
+                  placeholder="Enter password"
+                  value={pass}
+                  onChange={(e) => setPass(e.target.value)}/>
                 <div className='flex w-70 items-center gap-1'>
                   <input
                   type="checkbox"
@@ -32,6 +48,7 @@ export default function LoginForm() {
                 </div>
             </div>
         </div>
+      </form>
     </>
   )
 }
