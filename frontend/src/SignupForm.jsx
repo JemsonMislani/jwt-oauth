@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 export default function SignupForm() {
@@ -13,6 +13,14 @@ export default function SignupForm() {
       alert('Please enter new account')
       return
     }
+
+    axios.post('http://localhost:3009/createUsers', {
+      email: username, password: password
+    })
+    .then(result => {
+      setUser([...user, result.data.user])
+    })
+    .catch(err => console.log(err))
   }
 
   return (
