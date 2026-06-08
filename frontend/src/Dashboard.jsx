@@ -1,5 +1,20 @@
+import { useState } from "react"
 
 export default function Dashboard() {
+  const [showinp, setShowInp] = useState(false)
+  const [sec, setSec] = useState('')
+  const [section, setSection] = useState([])
+
+  const handleAddBtn = (e) => {
+    e.preventDefault()
+    if(!sec){
+      alert('Fill out field')
+      return
+    }
+    setSection([...section, {type: sec, task: []}])
+    setSec('')
+    setShowInp(false)
+  }
 
   return (
     <>
@@ -19,7 +34,35 @@ export default function Dashboard() {
         <main className="flex-1 p-6">
           <h1 className="text-2xl font-semibold">Welcome! What's our task for today?📝</h1>
           <p className="mt-2 text-gray-600">Small tasks everyday, add up to big results.✅️</p>
-          <button className="px-4 py-4 rounded m-5 ml-0 cursor-pointer bg-sky-400 hover:bg-sky-500 active:bg-sky-400">Add Section ✚</button>
+          <button 
+            className="px-4 py-4 rounded m-5 ml-0 cursor-pointer bg-sky-400 hover:bg-sky-500 active:bg-sky-400"
+            onClick={() => setShowInp(!showinp)}>Add Section ✚</button>
+        {
+            showinp && (
+            <div className="flex gap-1">
+            <input 
+              className="border border-1 px-2 py-2 rounded"
+              type="text" 
+              placeholder="Create section"
+              value={sec}
+              onChange={(e) => setSec(e.target.value)}
+              />
+            <button 
+              className="px-5 py-2 rounded cursor-pointer bg-green-700 text-white"
+              onClick={handleAddBtn}>Add</button>
+            <button 
+              className="px-5 py-2 rounded cursor-pointer bg-red-700 text-white"
+              onClick={() => setShowInp(false)}>Close</button>
+          </div>
+          )
+        }
+        {
+          section.map((ind) => {
+            return <div key={ind}>
+              <p>{ind.type}</p>
+            </div>
+          })
+        }
         </main>
       </div>
     </>
